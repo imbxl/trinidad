@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "566381100711",
+    "firebase_url": "https://trinidad-palermo.firebaseio.com",
+    "project_id": "trinidad-palermo",
+    "storage_bucket": "trinidad-palermo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566381100711:android:7c4d641d86cf03c7",
+        "android_client_info": {
+          "package_name": "ar.com.dia8publicidad.trinidadpalermo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566381100711-nlh3ito30iv148j5tjatksfs5rgec4g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO_uEUbU0FT18-It1fjazGKAMri5XdR6s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

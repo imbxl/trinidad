@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Your app title -->
+    <title>Sanatorio Trinidad Palermo</title>
+
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+    
+    <link rel="stylesheet" href="css/framework7-icons.css">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+ 
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+        <div class="list-block">
+            <div class="list-group">
+                <ul>
+                    <li>
+                      <a href="cuenta.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">person</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Mis datos</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="puestos.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">list</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Puestos disponibles</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" onClick="LogOut();" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">logout</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Cerrar Sesión</div>
+                        </div>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Views -->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Top Navbar-->
+            <div class="navbar" style="display:none">
+                <div class="navbar-inner">
+                    <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                    <div class="sliding"><a href="index.html" style="line-height: normal;"><img src="img/logo.jpg" height="35" /></a></div>
+                    <div class="right">
+                        <!--
+                          Right link contains only icon - additional "icon-only" class
+                          Additional "open-panel" class tells app to open panel when we click on this link
+                        -->
+                        <a href="historial.html" class="link icon-only"><i class="f7-icons">bell</i></a>
+                        <a href="#" class="link icon-only open-panel"><i class="f7-icons">bars</i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+            <div class="pages navbar-through toolbar-through">
+                <!-- Page, "data-page" contains page name -->
+                <div data-page="index" class="page">
+                    <!-- Scrollable page content -->
+                    <div class="page-content">
+                        <div class="content-block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar custom-toolbar" style="display:none"></div>
+        </div>
+    </div>
+
+
+    <div class="popup popup-producto" style="background-color:#F0F0F0">
+        <div class="navbar">
+        	<div class="navbar-inner navbar-on-center">
+                <div class="left">
+                    <a href="#" class="close-popup link">
+                        <i class="f7-icons">chevron_left</i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+        	</div>
+        </div>
+        <div class="producto-title">Postularme para</div>
+        <div class="contenido">
+        </div>
+        <div id="PostularmePor" class="list-block inset" style="margin:15px">
+        </div>
+    </div>
+    
+    <div class="login-screen">
+    <div class="view">
+      <div class="page">
+        <div class="page-content login-screen-content"><div style="height:15%"></div>
+          <div class="login-screen-title"><img src="img/logo.jpg" height="60" /></div>
+          <form>
+            <div class="list-block inset">
+              <ul>
+                <li class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">E-mail</div>
+                    <div class="item-input">
+                      <input type="text" name="email" id="login-user" placeholder="Su E-mail">
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Contraseña</div>
+                    <div class="item-input">
+                      <input type="password" name="pass" id="login-pass" placeholder="Su Contraseña">
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </form>
+   			<div class="content-block">
+          		<div class="login-message" style="text-align:center;"></div>
+          	</div>
+        </div>
+        <div class="toolbar custom-toolbar flex-row" style="position: absolute; background-color:#01886e"> 
+        	<div class="toolbar-inner">
+            	<a href="#" class="tool flex-rest-width link" onClick="doLogin();"><span class="text" style="color:#FFF">INGRESAR</span></a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="popup popup-login">
+        <div class="contenido">
+        </div>
+        <div class="toolbar custom-toolbar flex-row" style="position: absolute;"> 
+        	<div class="toolbar-inner">
+            	<a href="#" class="close-popup tool tool-border flex-rest-width link"><span class="text">INGRESAR</span></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup popup-getting-started tablet-fullscreen modal-in" style="background:#fff url(./img/loader.gif) no-repeat center center; display: block;">
+        <div class="contenido">        
+        </div>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>   
+    <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/aes.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+</body>
+
+</html>
