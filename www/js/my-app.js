@@ -16,6 +16,15 @@ var mainView = myApp.addView('.view-main', {
 });
 
 $$(document).on('deviceready', function() {
+	document.addEventListener("backbutton", function (e) { 
+		e.preventDefault(); 
+		if (mainView.activePage.name === 'index') {
+			navigator.notification.confirm("Desea salir de la aplicación?", function(button){if(button!=2){ navigator.app.exitApp(); } }, "Confirmation", "Si,No");
+		} else {
+			mainView.router.back();
+		}
+		return false;
+	}, false ); 
 	$$('.view-main .navbar').show();
 	if($$('.view-main .toolbar').html() != '') $$('.view-main .toolbar').show();
 	testLogin();
