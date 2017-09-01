@@ -23,7 +23,7 @@ $$(document).on('deviceready', function() {
 		} else {
 			mainView.router.back();
 		}
-		return false;
+		//return false;
 	}, false ); 
 	$$('.view-main .navbar').show();
 	if($$('.view-main .toolbar').html() != '') $$('.view-main .toolbar').show();
