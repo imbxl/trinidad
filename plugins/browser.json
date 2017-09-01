@@ -1,0 +1,32 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "ar.com.iclient"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "ar.com.iclient"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "85075801930",
+            "PACKAGE_NAME": "ar.com.iclient"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "ar.com.iclient"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "ar.com.iclient"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "ar.com.iclient"
+        }
+    }
+}

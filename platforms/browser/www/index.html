@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Your app title -->
+    <title>iClient</title>
+
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+    
+    <link rel="stylesheet" href="css/framework7-icons.css">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+        <div class="list-block">
+            <div class="list-group">
+                <ul>
+                    <li>
+                      <a href="cuenta.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">person</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Mi cuenta</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" onClick="mainView.hideToolbar(false); Escanear();" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">ticket</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Escanear ticket</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="historial.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">time</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Canjes realizados</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="canjear.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">list</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Canjear puntos</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" onClick="LogOut();" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">logout</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Cerrar Sesión</div>
+                        </div>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Views -->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Top Navbar-->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                    <div class="center sliding"><a href="index.html" style="line-height: normal;"><img src="img/logo.png" height="35" /></a></div>
+                    <div class="right">
+                        <!--
+                          Right link contains only icon - additional "icon-only" class
+                          Additional "open-panel" class tells app to open panel when we click on this link
+                        -->
+                        <a href="#" class="link icon-only open-panel"><i class="f7-icons">bars</i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+            <div class="pages navbar-through toolbar-through">
+                <!-- Page, "data-page" contains page name -->
+                <div data-page="index" class="page">
+                    <!-- Scrollable page content -->
+                    <div class="page-content">
+                        <div class="content-block" style="margin-top:0; padding: 0;">
+                            <div class="swiper-container swiper-1">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide"><img src="img/slider/Slide 1.png" style="width:100%;" /></div>
+                                    <div class="swiper-slide"><img src="img/slider/Slide 2.png" style="width:100%;" /></div>
+                                    <div class="swiper-slide"><img src="img/slider/Slide 3.png" style="width:100%;" /></div>
+                                </div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                            <div align="center" class="MarcasContainer"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Toolbar-->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <!-- Toolbar links -->
+                    <a href="canjear.html" class="link">Canjear puntos</a>
+                    <a href="#" onClick="Escanear()" class="link">Escanear ticket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="popup popup-producto">
+        <div class="navbar">
+        	<div class="navbar-inner navbar-on-center">
+                <div class="left">
+                    <a href="#" class="close-popup link">
+                        <i class="f7-icons">chevron_left</i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+        	</div>
+        </div>
+        <div class="contenido">
+        </div>
+        <div class="toolbar custom-toolbar flex-row" style="position: absolute;"> 
+        	<div class="toolbar-inner">
+            	<a href="#" class="close-popup tool tool-border flex-rest-width link"><i class="f7-icons">chevron_left</i> <span class="text">Volver</span></a> 
+            	<a href="#" class="tool flex-rest-width link canjear"><span class="f7-icons">navigation</span> <span class="text">Canjear</span></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup popup-historial">
+        <div class="navbar">
+        	<div class="navbar-inner navbar-on-center">
+                <div class="left">
+                    <a href="#" class="close-popup link">
+                        <i class="f7-icons">chevron_left</i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+        	</div>
+        </div>
+        <div class="contenido">
+        </div>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>   
+    <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/aes.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="back link">
+                <i class="f7-icons">chevron_left</i>
+                <span>Volver</span>
+            </a>
+        </div>
+        <div class="center sliding">Canjear puntos</div>
+        <div class="right">
+        	<a href="#" class="link icon-only open-panel"><i class="f7-icons">bars</i></a>
+        </div>
+    </div>
+</div>
+<div class="pages">
+	<div data-page="canjear" class="page">
+        <div class="page-content" style="background: #F0F0F0;">
+            <div class="list-block">
+              <ul>
+                <!-- Smart select item -->
+                <li>
+                  <!-- Additional "smart-select" class -->
+                  <a href="#" class="item-link smart-select" data-back-on-select="true">
+                    <!-- select -->
+                    <select id="FiltroEmpresa" onChange="FiltrarPorEmpresa()">
+                    </select>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title">Empresa</div>
+                        <div class="item-after">Todas</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>   
+            <div class="productos_lista"></div>
+        </div>
+    </div>
+</div>
