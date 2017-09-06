@@ -181,10 +181,10 @@ function testLogin(){
 function ConfigPush(){
 	var push = PushNotification.init({
 		"android": {
-			"senderID": "1089320506180"
+			"senderID": "566381100711"
 		},
 		"ios": {
-			"senderID": "1089320506180",
+			"senderID": "566381100711",
 			"sound": true,
 			"vibration": true,
 			"badge": true
