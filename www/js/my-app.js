@@ -111,10 +111,10 @@ function Registrarme() {
 		},
 		function( data ) {
         	if (data == 'OK') {
-				alert('¡Se registró con exito en iClient!');
+				navigator.notification.alert('¡Se registró con exito en Sanatorio de la Trinidad!',function(){},'Registro');
 				login(document.getElementById('formreg_mail').value, document.getElementById('formreg_pass').value);
 			}else{
-				alert(data);
+				navigator.notification.alert(data,function(){},'Error');
 			}
 		}
 	);
@@ -204,43 +204,16 @@ function ConfigPush(){
 		navigator.notification.alert(
 			data.message,         // message
 			function(){
-				mainView.router.load({url:'cuenta.html', reload: true});
+				if(data.title == 'Asignado a puesto'){
+					mainView.router.load({url:'historial.html', reload: true});
+				}else if(data.title == 'Nuevo puesto'){
+					mainView.router.load({url:'puestos.html', reload: true});
+				}
 			},                 // callback
 			data.title,           // title
 			'Ok'                  // buttonName
 		);
    });
-}
-
-function Escanear(){
-	cordova.plugins.barcodeScanner.scan(
-	  function (result) {
-		  if(!result.cancelled){
-			$$.get(result.text, function (data) {
-				if(data == 'OK'){
-		  			alert("¡Puntos agregados correctamente!");
-				}else{
-		  			alert(data);
-				}
-			});
-		  }
-	  },
-	  function (error) {
-		  alert("Error al leer el ticket");
-	  },
-	  {
-		  preferFrontCamera : false, // iOS and Android
-		  showFlipCameraButton : true, // iOS and Android
-		  showTorchButton : false, // iOS and Android
-		  torchOn: false, // Android, launch with the torch switched on (if available)
-		  prompt : "Ponga el codigo QR dentro del marco", // Android
-		  resultDisplayDuration: 0, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
-		  formats : "QR_CODE", // default: all but PDF_417 and RSS_EXPANDED
-		 // orientation : "landscape", // Android only (portrait|landscape), default unset so it rotates with the device
-		  disableAnimations : true, // iOS
-		  disableSuccessBeep: true // iOS
-	  }
-   );
 }
 
 function FiltrarPorEmpresa(){
@@ -258,6 +231,7 @@ function GetProductos(){
 		//console.log(json);
 		var html = '';
 		$$.each(json, function (index, row) {
+			var Postulado = parseInt(row.Postulado) || 0;
 			html += '<div id="prod_'+row.id+'" class="producto_item" categorias="'+row.Categorias+'">\
 				<div class="card">\
                 <div class="card-header">';
@@ -272,9 +246,13 @@ function GetProductos(){
                 <div class="card-content">\
                     <div class="text">'+row.Descripcion+'</div>\
                 </div>\
-                <div class="card-footer flex-row">\
-                <a href="#" onclick="ProductoVerMas('+row.id+')" class="tool flex-rest-width link"><i class="f7-icons">check</i> <span class="text">Postularme</span></a> \
-            	</div>\
+                <div class="card-footer flex-row">';
+				if(Postulado > 0){
+                html += '<div class="flex-rest-width tool" style="text-align:center;"><b style="text-align:center;"><span class="text">Ya postulado</span></b></div>';
+				}else{
+                html += '<a href="#" onclick="ProductoVerMas('+row.id+')" class="tool flex-rest-width link"><i class="f7-icons">check</i> <span class="text">Postularme</span></a>';
+				}				
+            html += '</div>\
             	</div>\
 			</div>';			
 		}); 
@@ -299,7 +277,7 @@ function ProductoVerMas(id){
 	var empresas_html = '<ul>';
 	$$.each(Empresas, function (index, row) {
 		var categorias = $$('#prod_'+id).attr("categorias").split(",");
-		console.log(categorias);
+		//console.log(categorias);
 		if(contains(row.id, categorias)){
 			empresas_html += '<li><a href="#" onclick="ProductoCanjear('+id+','+row.id+')" class="item-link list-button">'+row.Nombre+'</a></li>';
 		}
@@ -311,12 +289,13 @@ function ProductoVerMas(id){
 	myApp.popup('.popup-producto');
 }
 function ProductoCanjear(id, categoria){
-	$$.getJSON(BXL_WWW+'/datos.php?tipo=canje&id='+id+'&categoria='+categoria, function (json) {
+	$$.getJSON(BXL_WWW+'/datos.php?tipo=postularme&id='+id+'&categoria='+categoria, function (json) {
 		if(json != 'OK'){
-			alert(json['msg']);
+			navigator.notification.alert(json['msg'],function(){},'Error');
 			return;
 		}
-		alert('Se postuló correctamente!');
+		navigator.notification.alert('Se postuló correctamente!',function(){},'Confirmación');
+		myApp.closeModal('.popup-producto', false);
 		mainView.router.load({url:'historial.html', reload: true});
 	});
 }
@@ -339,7 +318,7 @@ function GetHistorial(){
                 <div class="card-header">';
 			if(row.URL != ''){
                     html += '<div class="avatar">\
-                    	<img src="http://iclient.com.ar/archivos/productos/'+row.URL+'" alt="avatar">\
+                    	<img src="'+BXL_WWW+'/archivos/productos/'+row.URL+'" alt="avatar">\
                     </div>';
 			}
              html += '<div class="user flex-column">\
