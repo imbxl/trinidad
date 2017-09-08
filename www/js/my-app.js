@@ -48,16 +48,42 @@ var mySwiper1 = myApp.swiper('.swiper-1', {
 
 myApp.onPageAfterAnimation('index', function (page){
 	mainView.showToolbar(false);
+	mainView.hideToolbar(true);
 })
 
 var XAP_init = false;
-var Empresas = [];
-$$(document).on('pageInit', function (e) {	
+var Categorias = [];
+var Turnos = [];
+var Departamentos = [];
+function HomeBloquesResize(){
+	var height = $$(window).height() - $$('.navbar').height();
+	height = ((height-45)/2);
+	var font_size_h = (height * 0.5);
+	var font_size_w = (($$(window).width() / 2) - 30) * 0.5;
+	if(font_size_h > font_size_w) var fsize = font_size_w; else var fsize = font_size_h;
+	$$('.bloquehome').css('height',height+'px');
+	$$('.bloquehome i').css('line-height',(height-15)+'px');
+	$$('.bloquehome i').css('font-size',fsize+'px');
+	$$('.bloquehome span').css('margin-top',((fsize/2)-5)+'px');
+}
+$$(window).on('resize orientationchange', function (e) {	
+	HomeBloquesResize();
+});
+$$(document).on('pageInit', function (e) {
+	HomeBloquesResize();	
 	if(!XAP_init){
-		$$.getJSON(BXL_WWW+'/datos.php?tipo=empresas', function (json) {
-			Empresas = [];
-			$$.each(json, function (index, row) {
-				Empresas.push(row);
+		$$.getJSON(BXL_WWW+'/datos.php?tipo=datos_info', function (json) {
+			Categorias = [];
+			$$.each(json['categorias'], function (index, row) {
+				Categorias.push(row);
+			});
+			Turnos = [];
+			$$.each(json['turnos'], function (index, row) {
+				Turnos.push(row);
+			});
+			Departamentos = [];
+			$$.each(json['departamentos'], function (index, row) {
+				Departamentos.push(row);
 			});
 		});
 		XAP_init = true;
@@ -70,6 +96,7 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'index') {
 		testLogin();
 		mainView.showToolbar(false);
+		$$('#MainToolbar').html('');
 	}else{
 		mainView.hideToolbar(true);
 	}
@@ -93,6 +120,15 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'historial') {
 		GetHistorial();
 	}
+		
+    if (page.name === 'calendario') {
+		GetCalendario();
+		mainView.hideToolbar(false);
+		mainView.showToolbar(true);
+		$$('#MainToolbar').html($$('.calendar-toolbar').html());
+		$$('#MainToolbar').show();
+	}
+	
 	myApp.closePanel();
 })
 
@@ -179,6 +215,7 @@ function testLogin(){
 }
 
 function ConfigPush(){
+	if(typeof PushNotification === 'undefined') return;
 	var push = PushNotification.init({
 		"android": {
 			"senderID": "566381100711"
@@ -201,18 +238,11 @@ function ConfigPush(){
 	});
 	push.on('error', function(e) { console.log("push error = " + e.message); });
 	push.on('notification', function(data) {
-		navigator.notification.alert(
-			data.message,         // message
-			function(){
-				if(data.title == 'Asignado a puesto'){
-					mainView.router.load({url:'historial.html', reload: true});
-				}else if(data.title == 'Nuevo puesto'){
-					mainView.router.load({url:'puestos.html', reload: true});
-				}
-			},                 // callback
-			data.title,           // title
-			'Ok'                  // buttonName
-		);
+		if(data.title == 'Asignado a puesto'){
+			mainView.router.load({url:'historial.html', reload: true});
+		}else if(data.title == 'Nuevo puesto'){
+			mainView.router.load({url:'puestos.html', reload: true});
+		}
    });
 }
 
@@ -240,7 +270,7 @@ function GetProductos(){
                     </div>';
              html += '<div class="user flex-column">\
                         <div class="name">'+row.Departamento+'</div>\
-                        <div class="time"><b>'+row.Turno+'</b></div>\
+                        <div class="time">'+row.Fecha+' - <b>'+row.Turno+'</b></div>\
                     </div>\
                 </div>\
                 <div class="card-content">\
@@ -275,7 +305,7 @@ function ProductoVerMas(id){
 	//$$('.popup-producto .canjear').attr('onclick','ProductoCanjear('+id+')');
 		
 	var empresas_html = '<ul>';
-	$$.each(Empresas, function (index, row) {
+	$$.each(Categorias, function (index, row) {
 		var categorias = $$('#prod_'+id).attr("categorias").split(",");
 		//console.log(categorias);
 		if(contains(row.id, categorias)){
@@ -305,44 +335,127 @@ function GetHistorial(){
 		//console.log(json);
 		var html = '';
 		$$.each(json, function (index, row) {
-			if(row.Usado == 'Y'){
-				var CODE = 'Canje ya utilizado';
-				var style = ' style="background-color: #DDD;"';	
-			}else{
-				var CODE = 'CODIGO: <b>'+row.Codigo+'</b>';
-				var style = '';	
-			}
-			
-			html += '<div id="histo_'+row.id+'">\
-				<div class="card" '+style+'>\
+			var Postulado = parseInt(row.Postulado) || 0;
+			html += '<div id="prod_'+row.id+'" class="producto_item" categorias="'+row.Categorias+'">\
+				<div class="card">\
                 <div class="card-header">';
-			if(row.URL != ''){
-                    html += '<div class="avatar">\
-                    	<img src="'+BXL_WWW+'/archivos/productos/'+row.URL+'" alt="avatar">\
+             html += '<div class="avatar">\
+                    	<div class="circle-'+row.Estado+'"></div>\
                     </div>';
-			}
              html += '<div class="user flex-column">\
-                        <div class="name">'+row.Titulo+'</div>\
-                        <div class="time">'+CODE+'</div>\
+                        <div class="name">'+row.Departamento+'</div>\
+                        <div class="time">'+row.Fecha+' - <b>'+row.Turno+'</b></div>\
                     </div>\
                 </div>\
                 <div class="card-content">\
-                    <div class="text">'+row.Copete+'</div>\
+                    <div class="text">'+row.Descripcion+'</div>\
                 </div>\
-                <div class="card-footer flex-row">\
-                	<a href="#" onclick="HistorialVerMas('+row.id+')" class="tool tool-border flex-rest-width link"><i class="f7-icons">eye</i> <span class="text">Ver más</span></a> \
             	</div>\
-            	</div>\
-            	<div class="descripcion_larga" style="display:none">'+row.Descripcion+'</div>\
 			</div>';			
 		}); 
 		$$('.historial_lista').html(html);
 	});
 }
+
 function HistorialVerMas(id){
 	var html = $$('#histo_'+id).html();
 	$$('.popup-historial .contenido').html(html);
 	$$('.popup-historial .contenido .card-footer').remove();
 	$$('.popup-historial .descripcion_larga').show();
 	myApp.popup('.popup-historial');
+}
+
+var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto' , 'Septiembre' , 'Octubre', 'Noviembre', 'Diciembre'];
+var calendarInline;
+function GetCalendario(){
+	calendarInline = myApp.calendar({
+		container: '#calendar-inline-container',
+		value: [new Date()],
+		weekHeader: false,
+		toolbarTemplate: 
+			'<div class="toolbar calendar-custom-toolbar">' +
+				'<div class="toolbar-inner">' +
+					'<div class="left">' +
+						'<a href="#" class="link icon-only"><i class="icon icon-back"></i></a>' +
+					'</div>' +
+					'<div class="center"></div>' +
+					'<div class="right">' +
+						'<a href="#" class="link icon-only"><i class="icon icon-forward"></i></a>' +
+					'</div>' +
+				'</div>' +
+			'</div>',
+		onOpen: function (p) {
+			console.log(p);
+			$$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] +', ' + p.currentYear);
+			$$('.calendar-custom-toolbar .left .link').on('click', function () {
+				calendarInline.prevMonth();
+			});
+			$$('.calendar-custom-toolbar .right .link').on('click', function () {
+				calendarInline.nextMonth();
+			});
+			$$('#PuestoFecha').html('Hoy');
+		},
+		onDayClick: function (p, dayContainer, year, month, day) {
+			var Hoy = new Date();
+			if(Hoy.getDay() == day && Hoy.getMonth() == month && Hoy.getFullYear() == year){
+				$$('#PuestoFecha').html('Hoy');
+			}else{
+				$$('#PuestoFecha').html(day+'/'+(month+1)+'/'+year);
+			}
+		},
+		onMonthYearChangeStart: function (p) {
+			$$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] +', ' + p.currentYear);
+		}
+	});    
+}
+function PostularmeCalendario(){
+	var date = new Date(calendarInline.value);
+	var day = date.getDate();
+	if(day < 10) day = '0'+day;
+	var month = (date.getMonth()+1);
+	if(month < 10) month = '0'+month;
+	var year = date.getFullYear();
+	
+	$$('#Postularme_Fecha').val(year+'-'+month+'-'+day);
+	
+	$$('.postularme_fecha').html(day+'/'+month+'/'+year);	
+	
+	var html = '';
+	$$.each(Categorias, function (index, row) {
+		html += '<option value="'+row.id+'">'+row.Nombre+'</option>';
+	});
+	$$('#Postularme_Categoria').html(html);
+	
+	var html = '';
+	$$.each(Departamentos, function (index, row) {
+		html += '<option value="'+row.id+'">'+row.Nombre+'</option>';
+	});
+	$$('#Postularme_Departamento').html(html);
+	
+	var html = '';
+	$$.each(Turnos, function (index, row) {
+		html += '<option value="'+row.id+'">'+row.Nombre+' ('+row.Horarios+')</option>';
+	});
+	$$('#Postularme_Turno').html(html);
+	
+	myApp.popup('.popup-postularme');
+}
+function EnviarSolicitud(){	
+	myApp.popup('.popup-getting-started');
+	$$.post(BXL_WWW+"/datos.php?tipo=enviar_solicitud", {
+			Fecha:document.getElementById('Postularme_Fecha').value,
+			Categoria:document.getElementById('Postularme_Categoria').value,
+			Departamento:document.getElementById('Postularme_Departamento').value,
+			Turno:document.getElementById('Postularme_Turno').value,
+			Descripcion:document.getElementById('Postularme_Descripcion').value
+		},
+		function( data ) {
+        	if (data == 'OK') {
+				myApp.closeModal('.popup-postularme', false);
+				CloseLoaderPrincipal();
+			}else{
+				navigator.notification.alert(data,function(){},'Error');
+			}
+		}
+	);
 }

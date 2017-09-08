@@ -49,6 +49,22 @@
                       </a>
                     </li>
                     <li>
+                      <a href="calendario.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">calendar</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Calendario</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="historial.html" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">time</i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Historial</div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
                       <a href="#" onClick="LogOut();" class="item-link item-content">
                         <div class="item-media"><i class="f7-icons">logout</i></div>
                         <div class="item-inner">
@@ -72,10 +88,8 @@
                     <div class="sliding"><a href="index.html" style="line-height: normal;"><img src="img/logo.jpg" height="35" /></a></div>
                     <div class="right">
                         <!--
-                          Right link contains only icon - additional "icon-only" class
-                          Additional "open-panel" class tells app to open panel when we click on this link
+                        <a href="notificaciones.html" class="link icon-only"><i class="f7-icons">bell</i></a>
                         -->
-                        <a href="historial.html" class="link icon-only"><i class="f7-icons">bell</i></a>
                         <a href="#" class="link icon-only open-panel"><i class="f7-icons">bars</i></a>
                     </div>
                 </div>
@@ -85,13 +99,21 @@
                 <!-- Page, "data-page" contains page name -->
                 <div data-page="index" class="page">
                     <!-- Scrollable page content -->
-                    <div class="page-content">
-                        <div class="content-block">
+                    <div class="page-content" style="padding-bottom:0">
+                        <div class="content-block" style="margin:0">
+                            <div class="row">
+                                <a href="cuenta.html" class="bloquehome col-50"><i class="f7-icons">person_fill</i><span>Mis datos</span></a>
+                                <a href="puestos.html" class="bloquehome col-50"><i class="f7-icons">list_fill</i><span>Puestos</span></a>
+                            </div>
+                            <div class="row">
+                                <a href="calendario.html" class="bloquehome col-50"><i class="f7-icons">calendar_fill</i><span>Calendario</span></a>
+                                <a href="historial.html" class="bloquehome col-50"><i class="f7-icons">time_fill</i><span>Historial</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="toolbar custom-toolbar" style="display:none"></div>
+            <div id="MainToolbar" class="toolbar custom-toolbar" style="display:none"></div>
         </div>
     </div>
 
@@ -166,6 +188,82 @@
     
     <div class="popup popup-getting-started tablet-fullscreen modal-in" style="background:#fff url(./img/loader.gif) no-repeat center center; display: block;">
         <div class="contenido">        
+        </div>
+    </div>
+    
+    <div class="popup popup-postularme" style="background-color:#F0F0F0">
+        <div class="navbar"> 
+        	<div class="navbar-inner navbar-on-center">
+                <div class="left">
+                    <a href="#" class="close-popup link">
+                        <i class="f7-icons">chevron_left</i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+        	</div>
+        </div>
+        <div class="producto-title" style="font-size: 24px;">Postularme el <span class="postularme_fecha"></span></div>
+        <div class="contenido">
+            <div class="list-block">
+              <ul>
+                <li>
+                  <div class="item-content">
+                    <div class="item-media"><i class="icon f7-icons">calendar</i></div>
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <input id="Postularme_Fecha" type="date" readonly />
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-media"><i class="icon f7-icons">time</i></div>
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <select id="Postularme_Turno">
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-media"><i class="icon f7-icons">collection</i></div>
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <select id="Postularme_Departamento">
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-media"><i class="icon f7-icons">stopwatch</i></div>
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <select id="Postularme_Categoria">
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="align-top">
+                  <div class="item-content">
+                    <div class="item-media"><i class="icon f7-icons">chat</i></div>
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <textarea id="Postularme_Descripcion" placeholder="Descripcion"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <p class="buttons-row" style="text-align:center">
+            	<a href="javascript:void(0)" onClick="EnviarSolicitud()" class="button button-raised button-big button-fill color-green" style="width: auto; margin: auto;">ENVIAR SOLICITUD</a>
+            </p>
         </div>
     </div>
 

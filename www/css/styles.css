@@ -220,3 +220,31 @@
 .toolbar a{
 	color:#555;
 }
+.bloquehome{
+	background-color:#CCC;
+	text-align:center;
+	margin:15px 0 0 0;
+	position:relative;
+}
+.bloquehome i{
+	color:#FFF;
+}
+.bloquehome span{
+	display:block;
+	position:absolute;
+	top:50%;
+	left:0;
+	width:100%;
+	text-align:center;
+	color:#FFF;
+	font-weight:bold;
+}
+.left i{
+	margin: auto;
+}
+.center{
+	text-align:center;
+}
+.right i{
+	margin: auto;
+}
