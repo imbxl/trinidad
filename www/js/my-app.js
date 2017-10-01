@@ -108,6 +108,7 @@ $$(document).on('pageInit', function (e) {
 			//$$('#Datos_DNI').html(json['DNI']);
 			$$('#Datos_Tel').html(json['Telefono']);
 			$$('#Datos_Email').html(json['Email']);
+			$$('#Datos_Horas').html('<input type="number" onChange="CambiarHoras(this.value);" value="'+json['Horas']+'">');
 			//$$('#Datos_Puntos').html(parseInt(json['Puntos'])-parseInt(json['Canjes']));
 		});
 	}
@@ -312,7 +313,7 @@ function ProductoVerMas(id){
 			empresas_html += '<li><a href="#" onclick="ProductoCanjear('+id+','+row.id+')" class="item-link list-button">'+row.Nombre+'</a></li>';
 		}
 	});
-	empresas_html += '<li><a href="#" class="close-popup item-link list-button">No postularme</a></li>';
+	empresas_html += '<li><a href="#" onclick="ProductoCanjear('+id+',\'0\')" class="item-link list-button">No estoy interesado</a></li>';
 	empresas_html += '</ul>';
 	$$('#PostularmePor').html(empresas_html);
 		
@@ -324,7 +325,7 @@ function ProductoCanjear(id, categoria){
 			navigator.notification.alert(json['msg'],function(){},'Error');
 			return;
 		}
-		navigator.notification.alert('Se postuló correctamente!',function(){},'Confirmación');
+		navigator.notification.alert('Ya recibimos su respuesta!',function(){},'Confirmación');
 		myApp.closeModal('.popup-producto', false);
 		mainView.router.load({url:'historial.html', reload: true});
 	});
@@ -364,6 +365,9 @@ function HistorialVerMas(id){
 	$$('.popup-historial .descripcion_larga').show();
 	myApp.popup('.popup-historial');
 }
+function CambiarHoras(val){
+	$$.get(BXL_WWW+'/datos.php?tipo=horas&val='+val);
+}
 
 var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto' , 'Septiembre' , 'Octubre', 'Noviembre', 'Diciembre'];
 var calendarInline;
@@ -400,7 +404,7 @@ function GetCalendario(){
 			if(Hoy.getDay() == day && Hoy.getMonth() == month && Hoy.getFullYear() == year){
 				$$('#PuestoFecha').html('Hoy');
 			}else{
-				$$('#PuestoFecha').html(day+'/'+(month+1)+'/'+year);
+				$$('#PuestoFecha').html(day+'/'+(parseInt(month)+1)+'/'+year);
 			}
 		},
 		onMonthYearChangeStart: function (p) {
