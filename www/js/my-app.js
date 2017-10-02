@@ -108,7 +108,7 @@ $$(document).on('pageInit', function (e) {
 			//$$('#Datos_DNI').html(json['DNI']);
 			$$('#Datos_Tel').html(json['Telefono']);
 			$$('#Datos_Email').html(json['Email']);
-			$$('#Datos_Horas').html('<input type="number" onChange="CambiarHoras(this.value);" value="'+json['Horas']+'">');
+			$$('#Datos_Horas').html('<input type="number" onChange="CambiarHoras(this.value);" value="'+json['HorasAviso']+'">');
 			//$$('#Datos_Puntos').html(parseInt(json['Puntos'])-parseInt(json['Canjes']));
 		});
 	}
